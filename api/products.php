@@ -1,38 +1,48 @@
 <?php
 require_once __DIR__ . '/db.php';
 
-$pdo = db();
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
-    $search = $_GET['search'] ?? '';
-    $categoryId = $_GET['category_id'] ?? '';
-    $limit = min((int)($_GET['limit'] ?? 100), 200);
-    if ($limit <= 0) {
-        $limit = 100;
+    try {
+        $pdo = db();
+        $search = $_GET['search'] ?? '';
+        $categoryId = $_GET['category_id'] ?? '';
+        $limit = min((int)($_GET['limit'] ?? 100), 200);
+        if ($limit <= 0) {
+            $limit = 100;
+        }
+
+        $sql = 'SELECT p.id, p.name, p.slug, p.description, p.price, p.stock, p.image_url, p.featured, c.name AS category_name, p.category_id
+                FROM products p
+                LEFT JOIN categories c ON c.id = p.category_id
+                WHERE p.is_active = 1';
+        $params = [];
+
+        if ($search !== '') {
+            $sql .= ' AND (p.name LIKE :search OR p.description LIKE :search)';
+            $params['search'] = '%' . $search . '%';
+        }
+
+        if ($categoryId !== '') {
+            $sql .= ' AND p.category_id = :category_id';
+            $params['category_id'] = (int)$categoryId;
+        }
+
+        $sql .= ' ORDER BY p.featured DESC, p.created_at DESC LIMIT ' . $limit;
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        json_response(['products' => $stmt->fetchAll()]);
+    } catch (Throwable $e) {
+        json_response([
+            'products' => [],
+            'warning' => 'Products unavailable. Check DB connection/environment variables.',
+            'details' => $e->getMessage(),
+        ], 200);
     }
-
-    $sql = 'SELECT p.id, p.name, p.slug, p.description, p.price, p.stock, p.image_url, p.featured, c.name AS category_name, p.category_id
-            FROM products p
-            LEFT JOIN categories c ON c.id = p.category_id
-            WHERE p.is_active = 1';
-    $params = [];
-
-    if ($search !== '') {
-        $sql .= ' AND (p.name LIKE :search OR p.description LIKE :search)';
-        $params['search'] = '%' . $search . '%';
-    }
-
-    if ($categoryId !== '') {
-        $sql .= ' AND p.category_id = :category_id';
-        $params['category_id'] = (int)$categoryId;
-    }
-
-    $sql .= ' ORDER BY p.featured DESC, p.created_at DESC LIMIT ' . $limit;
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
-    json_response(['products' => $stmt->fetchAll()]);
 }
+
+$pdo = db();
 
 if ($method === 'POST') {
     require_admin();
