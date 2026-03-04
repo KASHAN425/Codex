@@ -14,7 +14,7 @@ A complete Loomi-themed handcraft e-commerce starter using HTML, CSS, Bootstrap,
 - MySQL schema and Loomi-style starter seed data
 
 ## Deploy on Vercel
-- Uses `@vercel/php` for backend endpoints in `/api`
+- Uses `vercel-php` runtime for backend endpoints in `/api`
 - Static frontend served from `index.html`
 - Set environment variables from `.env.example`
 - Import `sql/schema.sql` into your MySQL database
@@ -35,3 +35,8 @@ A complete Loomi-themed handcraft e-commerce starter using HTML, CSS, Bootstrap,
 - If root URL shows `404: NOT_FOUND`, keep `vercel.json` in project root and redeploy.
 - If `/api/categories.php` or `/api/products.php` returns 500, verify Vercel env vars: `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`.
 - Public catalog endpoints now return an empty list + warning JSON when DB is unavailable, so the frontend can still render.
+
+
+## Important runtime note
+- Do **not** use legacy `"builds"` with `"@vercel/php"`; that package is deprecated/unpublished and causes deploy-time build failure.
+- This repo uses `functions.api/*.php -> runtime: vercel-php@0.7.3` in `vercel.json`, which is the supported setup.
