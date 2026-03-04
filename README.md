@@ -22,3 +22,10 @@ A complete Loomi-themed handcraft e-commerce starter using HTML, CSS, Bootstrap,
 ## Default admin account
 - Email: `admin@store.com`
 - Password: `Admin@123`
+
+
+## Vercel deployment checklist
+- Set project **Root Directory** to this repository root (where `index.html` exists).
+- Add environment variables in Vercel project settings: `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`.
+- Use an external MySQL service (Vercel does not provide local MySQL).
+- After first deploy, open `/api/products.php` directly to confirm API runtime works.
