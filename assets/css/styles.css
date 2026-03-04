@@ -1,0 +1,64 @@
+:root {
+  --loomi-bg: #fff8f0;
+  --loomi-ink: #34423a;
+  --loomi-accent: #a45f7a;
+  --loomi-soft: #efe6d9;
+}
+
+body {
+  background: radial-gradient(circle at top, #fffdf8 0%, var(--loomi-bg) 45%, #f8efe3 100%);
+  color: var(--loomi-ink);
+}
+
+.loomi-nav {
+  background: linear-gradient(90deg, #2e3b35, #586b5f);
+}
+
+.loomi-cart-btn {
+  background: #f5d490;
+  border: none;
+}
+
+.hero {
+  background: linear-gradient(120deg, #6c7f72, #41534a 55%, #2c3732);
+}
+
+.brand-chip {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+}
+
+.brand-card {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+  padding: 1rem;
+  backdrop-filter: blur(2px);
+}
+
+.loomi-note {
+  border-radius: 14px;
+  background: var(--loomi-soft);
+  border: 1px solid #e8dbc8;
+}
+
+.card {
+  border: 1px solid #e5d8c7;
+}
+
+.card img {
+  height: 220px;
+  object-fit: cover;
+}
+
+.price-tag {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #825126;
+}
+
+#adminPanel {
+  border: 1px solid #ffe08a;
+}
